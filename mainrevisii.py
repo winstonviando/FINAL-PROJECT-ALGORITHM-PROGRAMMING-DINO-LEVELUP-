@@ -109,7 +109,7 @@ class Cactus(pygame.sprite.Sprite):
         self.sprites = []
         for i in range(1, 7):
             current_sprite = pygame.transform.scale(
-                pygame.image.load(f"Assets/Cactus/cactus{i}rev.png"), (100, 150))
+                pygame.image.load(f"Assets/Cactus/cactus{i}revv.png"), (100, 150))
             self.sprites.append(current_sprite)
         self.image = random.choice(self.sprites)
         self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
