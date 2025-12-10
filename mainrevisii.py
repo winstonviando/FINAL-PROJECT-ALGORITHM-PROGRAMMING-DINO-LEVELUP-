@@ -1,31 +1,30 @@
+# (pygame: main library for), (os: use to check file like high score), (random: random cactus, cloud, powerups), (sys: to exit game
 import pygame
 import os
 import random
 import sys
 pygame.init()
-# High score
-game_state = "menu"
-high_score = 0
 
-# Load saved high score if exists
+game_state = "menu" #determine game state in menu
+high_score = 0 #set initial high score to 0
+
+# Load saved high score if exists and invalid then high score is 0
 if os.path.exists("highscore.txt"):
     with open("highscore.txt", "r") as f:
         try:
-            high_score = int(f.read())
+            high_score = int(f.read()) #read file and change into integer
         except:
             high_score = 0
 
-# Screen
+#Screen
 screen = pygame.display.set_mode((1280, 720))
-clock = pygame.time.Clock()
+clock = pygame.time.Clock() #FPS control
 pygame.display.set_caption("Dino LevelUp - Powerups")
 
-# Font
+#Font
 game_font = pygame.font.Font("Assets/Other/PressStart2P-Regular.ttf", 24)
 
-# ---------------------------
-# Classes
-# ---------------------------
+#Classes
 class Cloud(pygame.sprite.Sprite):
     def __init__(self, image, x_pos, y_pos):
         super().__init__()
