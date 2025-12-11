@@ -390,7 +390,6 @@ while True:
                     with open("highscore.txt", "w") as f:
                         f.write(str(high_score))
 
-
         # ----------------
         # Collision with powerups
         # ----------------
@@ -441,11 +440,11 @@ while True:
             if round(player_score, 1) % 100 == 0 and int(player_score) > 0:
                 points_sfx.play()
 
-            # --- DYNAMIC SPAWN COOLDOWN LOGIC ---
+            # --- spawn cooldown logic ---
             # As speed increases, the cooldown time decreases to maintain density.
             BASE_COOLDOWN = 2000
             MIN_COOLDOWN = 600
-            
+        
             # Use game_speed as a factor. Current start speed is 3.
             speed_factor = max(1, game_speed / 3) 
             
@@ -488,7 +487,6 @@ while True:
             high_surface = game_font.render(f"HI {high_score}", True, "black")
             screen.blit(high_surface, (950, 10))
 
-
             # Update groups
             cloud_group.update()
             cloud_group.draw(screen)
@@ -511,11 +509,9 @@ while True:
 
             # Ground scroll
             ground_x -= game_speed 
-
             screen.blit(ground, (ground_x, 360))
             screen.blit(ground, (ground_x + 1280, 360))
             if ground_x <= -1280:
                 ground_x = 0
-
     clock.tick(120)
     pygame.display.update()
