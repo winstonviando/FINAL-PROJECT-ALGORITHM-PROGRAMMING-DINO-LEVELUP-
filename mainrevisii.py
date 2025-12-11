@@ -191,10 +191,7 @@ class Powerup(pygame.sprite.Sprite):
         if self.rect.right < -50:
             self.kill()
 
-
-# ---------------------------
 # Variables & State
-# ---------------------------
 game_speed = 3
 speed_multiplier = 1 # used for slow motion powerup
 player_score = 0
@@ -307,9 +304,9 @@ def draw_shield_aura(sprite):
     pygame.draw.circle(aura_surf, (0, 160, 255, 100), (aura_surf.get_width()//2, aura_surf.get_height()//2), max(sprite.rect.width, sprite.rect.height))
     screen.blit(aura_surf, (sprite.rect.centerx - aura_surf.get_width()//2, sprite.rect.centery - aura_surf.get_height()//2))
 
-# ---------------------------
+
 # Main Loop
-# ---------------------------
+
 # Start Button
 start_btn_rect = pygame.Rect(0, 0, 300, 80)
 start_btn_rect.center = (640, 500)
@@ -390,9 +387,7 @@ while True:
                     with open("highscore.txt", "w") as f:
                         f.write(str(high_score))
 
-        # ----------------
         # Collision with powerups
-        # ----------------
         collected = pygame.sprite.spritecollide(dino_group.sprite, powerup_group, True)
         for pu in collected:
             # activate powerup
@@ -400,7 +395,6 @@ while True:
             
             # All powerups last for 3 seconds (3000ms)
             POWERUP_DURATION = 3000
-            
             if pu.kind == "shield":
                 shield_active = True
                 shield_end_time = now + POWERUP_DURATION
@@ -426,10 +420,7 @@ while True:
         if double_points_active and t >= double_points_end_time:
             double_points_active = False
 
-        
-        # ----------------
         # Game over display
-        # ----------------
         if game_over:
             end_game()
         else:
@@ -500,10 +491,8 @@ while True:
             # Draw shield aura if active
             if shield_active:
                 draw_shield_aura(dino_group.sprite)
-
             obstacle_group.update()
             obstacle_group.draw(screen)
-
             powerup_group.update()
             powerup_group.draw(screen)
 
