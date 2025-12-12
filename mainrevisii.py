@@ -241,7 +241,7 @@ pickup_sfx = None
 try:
     pickup_sfx = pygame.mixer.Sound("sfx/pickup.mp3")
 except Exception:
-    # if no pickup sound, ignore
+    # if no sound, ignore and no outputing error
     pickup_sfx = None
 
 all_sfx = pygame.mixer.Sound("sfx/AllSound.mp3")
