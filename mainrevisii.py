@@ -99,7 +99,6 @@ class Dino(pygame.sprite.Sprite):
         else:
             self.image = self.running_sprites[int(self.current_image)]
 
-
 class Cactus(pygame.sprite.Sprite):
     def __init__(self, x_pos, y_pos):
         super().__init__()
@@ -120,7 +119,6 @@ class Cactus(pygame.sprite.Sprite):
         # remove if offscreen
         if self.rect.right < -50:
             self.kill()
-
 
 class Ptero(pygame.sprite.Sprite):
     def __init__(self):
@@ -150,7 +148,6 @@ class Ptero(pygame.sprite.Sprite):
         if self.current_image >= 2:
             self.current_image = 0
         self.image = self.sprites[int(self.current_image)]
-
 
 class Powerup(pygame.sprite.Sprite):
     """Power-up that moves left like obstacles. type in {'shield','jump','double'}"""
@@ -182,7 +179,6 @@ class Powerup(pygame.sprite.Sprite):
                 points = [ (32, 8), (42, 22), (56, 22), (46, 36), (50, 50), (32, 40), (14, 50), (18, 36), (8, 22), (22, 22)]
                 pygame.draw.polygon(self.image, (180, 0, 220, 200), points)
 
-
         self.rect = self.image.get_rect(center=(x_pos, y_pos))
         self.spawn_time = pygame.time.get_ticks()
 
@@ -197,6 +193,7 @@ speed_multiplier = 1 # used for slow motion powerup
 player_score = 0
 game_over = False
 obstacle_timer = 0
+
 # Initial cooldown is set high, but will be dynamically calculated in the loop
 obstacle_cooldown = 2000 
 powerup_timer = 0
@@ -252,9 +249,8 @@ all_sfx.play(loops=-1)
 CLOUD_EVENT = pygame.USEREVENT
 pygame.time.set_timer(CLOUD_EVENT, 3000)
 
-# ---------------------------
 # Functions
-# ---------------------------
+
 def end_game():
     global player_score, game_speed
     game_over_text = game_font.render("Game Over!", True, "black")
