@@ -65,9 +65,9 @@ class Dino(pygame.sprite.Sprite):
             jump_sfx.play()
             # Jump height depends on jump boost
             if jump_boost_active:
-                self.velocity = -15
+                self.velocity = -24
             else:
-                self.velocity = -12.5
+                self.velocity = -21
 
     def duck(self):
         self.ducking = True
@@ -79,7 +79,7 @@ class Dino(pygame.sprite.Sprite):
 
     def apply_gravity(self):
         self.rect.centery += self.velocity
-        self.velocity += 0.28 # gravity
+        self.velocity += 0.5   # gravity
 
         if self.rect.centery >= 360:
             self.rect.centery = 360
@@ -124,7 +124,7 @@ class Ptero(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.x_pos = random.choice([1300, 1000, 1500])
-        self.y_pos = random.choice([280, 290, 295])
+        self.y_pos = random.choice([280, 290, 300])
         self.sprites = []
         self.sprites.append(
             pygame.transform.scale(
@@ -151,19 +151,24 @@ class Ptero(pygame.sprite.Sprite):
 
 class Powerup(pygame.sprite.Sprite):
     """Power-up that moves left like obstacles. type in {'shield','jump','double'}"""
-    def __init__(self, kind, x_pos=1280, y_pos= random.choice([230, 250, 200])):
+    def __init__(self, kind, x_pos=1280, y_pos=None):
         super().__init__()
         self.kind = kind
+
+        # assign a new random y if not provided
+        if y_pos is None:
+            self.y = random.choice([230, 250, 200])
+        else:
+            self.y = y_pos
+        self.x = x_pos
+
         # try load images; fallback to a simple colored surface if missing
-        self.x_pos = x_pos
-        self.y_pos = y_pos
         try:
             if kind == "shield":
                 self.image = pygame.transform.scale(pygame.image.load("Assets/Powerups/shield.png"), (64, 64))
             elif kind == "jump":
                 self.image = pygame.transform.scale(pygame.image.load("Assets/Powerups/jump.png"), (64, 64))
             elif kind == "double":
-                # Changed image name to reflect double points
                 self.image = pygame.transform.scale(pygame.image.load("Assets/Powerups/double_points.png"), (64, 64))
             else:
                 raise FileNotFoundError
@@ -171,27 +176,31 @@ class Powerup(pygame.sprite.Sprite):
             # fallback simple icon
             self.image = pygame.Surface((64, 64), pygame.SRCALPHA)
             if kind == "shield":
-                # Blue circle
                 pygame.draw.circle(self.image, (0, 160, 255, 200), (32, 32), 30)
             elif kind == "jump":
-                # Yellow arrow/triangle
                 pygame.draw.polygon(self.image, (255, 200, 0, 200), [(10,54),(32,6),(54,54)])
             else:
-                # Distinct purple star/diamond for Double Points (fallback for double_points.png)
-                points = [ (32, 8), (42, 22), (56, 22), (46, 36), (50, 50), (32, 40), (14, 50), (18, 36), (8, 22), (22, 22)]
+                points = [(32, 8), (42, 22), (56, 22), (46, 36), (50, 50), (32, 40), (14, 50), (18, 36), (8, 22), (22, 22)]
                 pygame.draw.polygon(self.image, (180, 0, 220, 200), points)
+
+        self.rect = self.image.get_rect(center=(self.x, self.y))
+
+    def update(self):
+        self.x -= game_state["speed"] * game_state["speed_multiplier"]
+        self.rect.centerx = self.x
+        if self.rect.right < -50:
+            self.kill()
 
         self.rect = self.image.get_rect(center=(x_pos, y_pos))
         self.spawn_time = pygame.time.get_ticks()
 
     def update(self):
-        self.x_pos -= game_speed * speed_multiplier
-        self.rect.centerx = self.x_pos
+        self.rect.x -= game_speed * speed_multiplier
         if self.rect.right < -50:
             self.kill()
 
 # Variables & State
-game_speed = 3
+game_speed = 2
 speed_multiplier = 1 # used for slow motion powerup
 player_score = 0
 game_over = False
@@ -266,6 +275,7 @@ def end_game():
     high_rect = high_text.get_rect(center=(640, 380))
     screen.blit(high_text, high_rect)
 
+    game_speed = 5
 
 def reset_powerups():
     global shield_active, shield_end_time
@@ -423,7 +433,7 @@ while True:
             end_game()
         else:
             # game running logic
-            game_speed += 0.002  # slowly accelerate (base speed)
+            game_speed += 0.0015 # slowly accelerate (base speed)
 
             # points sound when hit 100s
             if round(player_score, 1) % 100 == 0 and int(player_score) > 0:
@@ -458,9 +468,7 @@ while True:
                 elif obstacle_random in range(35, 38):
                     # spawn a powerup instead
                     kind = random.choice(["shield", "jump", "double"])
-                    # random y coordinate for powerup spawn
-                    y_pos = random.choice([230, 250, 200])
-                    new_powerup = Powerup(kind, x_pos=1280, y_pos=y_pos)
+                    new_powerup = Powerup(kind)
                     powerup_group.add(new_powerup)
                     obstacle_timer = pygame.time.get_ticks()
 
