@@ -60,39 +60,39 @@ class Dino(pygame.sprite.Sprite): #dinosaur class the main character
         self.ducking = False #initial ducking state is false
 
     def jump(self):
-        # Jump allowed only if on ground
+        # Jump allowed only if on ground (prevent double jump click)
         if self.rect.centery >= 360:
-            jump_sfx.play()
+            jump_sfx.play() #play jump sound effect
             # Jump height depends on jump boost
             if jump_boost_active:
-                self.velocity = -15
+                self.velocity = -15 # higher jump with boost
             else:
-                self.velocity = -12.5
+                self.velocity = -12.5 # normal jump
 
     def duck(self):
-        self.ducking = True
-        self.rect.centery = 380
+        self.ducking = True #set ducking state to true
+        self.rect.centery = 380 #adjust y position for ducking
 
     def unduck(self):
-        self.ducking = False
-        self.rect.centery = 360
+        self.ducking = False #set ducking state to false
+        self.rect.centery = 360 #adjust y position back to normal
 
     def apply_gravity(self):
-        self.rect.centery += self.velocity
-        self.velocity += 0.3 # gravity
+        self.rect.centery += self.velocity #apply vertical velocity to y position
+        self.velocity += 0.3 # gravity add to velocity
 
-        if self.rect.centery >= 360:
-            self.rect.centery = 360
-            self.velocity = 0
+        if self.rect.centery >= 360: #if on ground
+            self.rect.centery = 360  #reset y position to ground level
+            self.velocity = 0 #reset velocity when on ground
 
-    def update(self):
-        self.animate()
-        self.apply_gravity()
+    def update(self): #update method called every frame
+        self.animate() #call animate method
+        self.apply_gravity() #apply gravity effect
 
     def animate(self):
-        self.current_image += 0.05
-        if self.current_image >= 2:
-            self.current_image = 0
+        self.current_image += 0.05 #increment current image for dino animation speed
+        if self.current_image >= 2: #loop back to first image > index 0
+            self.current_image = 0 #reset to first image
 
         if self.ducking:
             self.image = self.ducking_sprites[int(self.current_image)]
@@ -124,7 +124,7 @@ class Ptero(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.x_pos = random.choice([1300, 1000, 1500])
-        self.y_pos = random.choice([200, 250, 150])
+        self.y_pos = random.choice([250, 280, 230])
         self.sprites = []
         self.sprites.append(
             pygame.transform.scale(
@@ -456,7 +456,7 @@ while True:
                     # spawn a powerup instead
                     kind = random.choice(["shield", "jump", "double"])
                     # random y coordinate for powerup spawn
-                    y_pos = random.choice([200, 250, 150])
+                    y_pos = random.choice([230, 250, 280])
                     new_powerup = Powerup(kind, x_pos=1280, y_pos=y_pos)
                     powerup_group.add(new_powerup)
                     obstacle_timer = pygame.time.get_ticks()
