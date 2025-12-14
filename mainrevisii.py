@@ -198,9 +198,7 @@ game_over = False
 obstacle_timer = 0
 
 # Initial cooldown is set high, but will be dynamically calculated in the loop
-obstacle_cooldown = 3000 
 powerup_timer = 0
-powerup_cooldown = 6000  
 
 # Powerup states
 shield_active = False
@@ -253,7 +251,6 @@ CLOUD_EVENT = pygame.USEREVENT
 pygame.time.set_timer(CLOUD_EVENT, 3000)
 
 # Functions
-
 def end_game():
     global player_score, game_speed
     game_over_text = game_font.render("Game Over!", True, "black")
@@ -348,7 +345,7 @@ while True:
                     # Restart game when pressing jump after game over
                     if game_over:
                         game_over = False
-                        game_speed = 2
+                        game_speed = 3
                         player_score = 0
                         obstacle_group.empty()
                         ptero_group.empty()
@@ -423,7 +420,7 @@ while True:
             end_game()
         else:
             # game running logic
-            game_speed += 0.0015 # slowly accelerate (base speed)
+            game_speed += 0.001 # slowly accelerate (base speed)
 
             # points sound when hit 100s
             if round(player_score, 1) % 100 == 0 and int(player_score) > 0:
