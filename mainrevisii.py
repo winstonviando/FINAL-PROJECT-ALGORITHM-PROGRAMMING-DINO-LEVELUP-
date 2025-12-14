@@ -56,7 +56,7 @@ class Dino(pygame.sprite.Sprite):
         self.current_image = 0
         self.image = self.running_sprites[self.current_image]
         self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
-        self.velocity = 50
+        self.velocity = 0
         self.ducking = False
 
     def jump(self):
@@ -79,7 +79,7 @@ class Dino(pygame.sprite.Sprite):
 
     def apply_gravity(self):
         self.rect.centery += self.velocity
-        self.velocity += 0.28 # gravity
+        self.velocity += 0.3 # gravity
 
         if self.rect.centery >= 360:
             self.rect.centery = 360
@@ -198,7 +198,7 @@ game_over = False
 obstacle_timer = 0
 
 # Initial cooldown is set high, but will be dynamically calculated in the loop
-obstacle_cooldown = 2000 
+obstacle_cooldown = 3000 
 powerup_timer = 0
 powerup_cooldown = 6000  
 
@@ -423,7 +423,7 @@ while True:
             end_game()
         else:
             # game running logic
-            game_speed += 0.002  # slowly accelerate (base speed)
+            game_speed += 0.0015 # slowly accelerate (base speed)
 
             # points sound when hit 100s
             if round(player_score, 1) % 100 == 0 and int(player_score) > 0:
@@ -432,7 +432,7 @@ while True:
             # --- spawn cooldown logic ---
             # As speed increases, the cooldown time decreases to maintain density.
             BASE_COOLDOWN = 2000
-            MIN_COOLDOWN = 600
+            MIN_COOLDOWN = 800
         
             # Use game_speed as a factor. Current start speed is 3.
             speed_factor = max(1, game_speed / 3) 
