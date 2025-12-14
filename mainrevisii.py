@@ -67,7 +67,7 @@ class Dino(pygame.sprite.Sprite): #dinosaur class the main character
             if jump_boost_active:
                 self.velocity = -15 # higher jump with boost
             else:
-                self.velocity = -12.5 # normal jump
+                self.velocity = -12 # normal jump
 
     def duck(self):
         self.ducking = True #set ducking state to true
@@ -79,7 +79,7 @@ class Dino(pygame.sprite.Sprite): #dinosaur class the main character
 
     def apply_gravity(self):
         self.rect.centery += self.velocity #apply vertical velocity to y position
-        self.velocity += 0.3 # gravity add to velocity
+        self.velocity += 0.25 # gravity add to velocity
 
         if self.rect.centery >= 360: #if on ground
             self.rect.centery = 360  #reset y position to ground level
@@ -94,12 +94,12 @@ class Dino(pygame.sprite.Sprite): #dinosaur class the main character
         if self.current_image >= 2: #loop back to first image > index 0
             self.current_image = 0 #reset to first image
 
-        if self.ducking:
-            self.image = self.ducking_sprites[int(self.current_image)]
+        if self.ducking: #if ducking state is true
+            self.image = self.ducking_sprites[int(self.current_image)] #set image to ducking by convert float to int for index
         else:
-            self.image = self.running_sprites[int(self.current_image)]
+            self.image = self.running_sprites[int(self.current_image)] #set image to running by convert float to int for index
 
-class Cactus(pygame.sprite.Sprite):
+class Cactus(pygame.sprite.Sprite): #cactus obstacle class
     def __init__(self, x_pos, y_pos):
         super().__init__()
         self.x_pos = x_pos
@@ -109,22 +109,22 @@ class Cactus(pygame.sprite.Sprite):
             current_sprite = pygame.transform.scale(
                 pygame.image.load(f"Assets/Cactus/cactus{i}revv.png"), (100, 150))
             self.sprites.append(current_sprite)
-        self.image = random.choice(self.sprites)
+        self.image = random.choice(self.sprites) #randomly choose one cactus sprite out of 7
         self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
 
     def update(self):
         # use speed multiplier for slow motion
-        self.x_pos -= game_speed * speed_multiplier
+        self.x_pos -= game_speed * speed_multiplier #move left by game speed and increase with speed multiplier
         self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
-        # remove if offscreen
-        if self.rect.right < -50:
-            self.kill()
+        
+        if self.rect.right < -50: #if cactus is offscreen to the left
+            self.kill() #remove cactus from all groups and ram memory
 
-class Ptero(pygame.sprite.Sprite):
+class Ptero(pygame.sprite.Sprite): #pterodactyl obstacle class
     def __init__(self):
         super().__init__()
-        self.x_pos = random.choice([1300, 1000, 1500])
-        self.y_pos = random.choice([250, 280, 230])
+        self.x_pos = random.choice([1300, 1000, 1500]) #random x position on game spawn
+        self.y_pos = random.choice([250, 280, 230]) #random y position for flying heights
         self.sprites = []
         self.sprites.append(
             pygame.transform.scale(
@@ -132,32 +132,32 @@ class Ptero(pygame.sprite.Sprite):
         self.sprites.append(
             pygame.transform.scale(
                 pygame.image.load("Assets/Bird/Bird2rev.png"), (84, 62)))
-        self.current_image = 0
-        self.image = self.sprites[self.current_image]
-        self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
+        self.current_image = 0 #current image index for animation
+        self.image = self.sprites[self.current_image] #initial imageS
+        self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos)) #set rect position and make collision box
 
     def update(self):
-        self.animate()
-        self.x_pos -= game_speed * speed_multiplier
-        self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
-        if self.rect.right < -50:
-            self.kill()
+        self.animate() #animate ptero
+        self.x_pos -= game_speed * speed_multiplier #move left by game speed and increase with speed multiplier
+        self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos)) #update rect position
+        if self.rect.right < -50: #if ptero is offscreen to the left
+            self.kill() #remove ptero from all groups and ram memory
 
     def animate(self):
-        self.current_image += 0.02
+        self.current_image += 0.03 #increment current image for ptero animation speed
         if self.current_image >= 2:
             self.current_image = 0
         self.image = self.sprites[int(self.current_image)]
 
 class Powerup(pygame.sprite.Sprite):
-    """Power-up that moves left like obstacles. type in {'shield','jump','double'}"""
-    def __init__(self, kind, x_pos=1280, y_pos= random.choice([230, 250, 200])):
+    """Power-up that moves left like obstacles. {'shield','jump','double'}"""
+    def __init__(self, kind, x_pos= random.choice([1280, 1300, 1500]), y_pos= random.choice([230, 250, 200])):
         super().__init__()
-        self.kind = kind
+        self.kind = kind #powerup identity
         # try load images; fallback to a simple colored surface if missing
-        self.x_pos = x_pos
-        self.y_pos = y_pos
-        try:
+        self.x_pos = x_pos #powerup x position
+        self.y_pos = y_pos #powerup y position
+        try: #load images based on kind of powerupS
             if kind == "shield":
                 self.image = pygame.transform.scale(pygame.image.load("Assets/Powerups/shield.png"), (64, 64))
             elif kind == "jump":
@@ -166,15 +166,15 @@ class Powerup(pygame.sprite.Sprite):
                 # Changed image name to reflect double points
                 self.image = pygame.transform.scale(pygame.image.load("Assets/Powerups/double_points.png"), (64, 64))
             else:
-                raise FileNotFoundError
+                raise FileNotFoundError #invalid kind
         except Exception:
-            # fallback simple icon
-            self.image = pygame.Surface((64, 64), pygame.SRCALPHA)
+            # fallback: create simple colored surface
+            self.image = pygame.Surface((64, 64), pygame.SRCALPHA) #64x64 transparent surface
             if kind == "shield":
                 # Blue circle
                 pygame.draw.circle(self.image, (0, 160, 255, 200), (32, 32), 30)
             elif kind == "jump":
-                # Yellow arrow/triangle
+                # Yellow triangle
                 pygame.draw.polygon(self.image, (255, 200, 0, 200), [(10,54),(32,6),(54,54)])
             else:
                 # Distinct purple star/diamond for Double Points (fallback for double_points.png)
