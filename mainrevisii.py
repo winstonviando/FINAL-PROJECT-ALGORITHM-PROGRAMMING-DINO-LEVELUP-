@@ -177,32 +177,32 @@ class Powerup(pygame.sprite.Sprite):
                 # Yellow triangle
                 pygame.draw.polygon(self.image, (255, 200, 0, 200), [(10,54),(32,6),(54,54)])
             else:
-                # Distinct purple star/diamond for Double Points (fallback for double_points.png)
+                # Purple star/diamond for Double Points (fallback for double_points.png)
                 points = [ (32, 8), (42, 22), (56, 22), (46, 36), (50, 50), (32, 40), (14, 50), (18, 36), (8, 22), (22, 22)]
                 pygame.draw.polygon(self.image, (180, 0, 220, 200), points)
 
         self.rect = self.image.get_rect(center=(x_pos, y_pos))
-        self.spawn_time = pygame.time.get_ticks()
+        self.spawn_time = pygame.time.get_ticks() #timestamp when powerup spawned like powerup timer in miliseconds
 
     def update(self):
-        self.x_pos -= game_speed * speed_multiplier
+        self.x_pos -= game_speed * speed_multiplier #move left by game speed and increase with speed multiplier
         self.rect.centerx = self.x_pos
         if self.rect.right < -50:
             self.kill()
 
 # Variables & State
-game_speed = 3
-speed_multiplier = 1 # used for slow motion powerup
-player_score = 0
-game_over = False
-obstacle_timer = 0
+game_speed = 3 #initial game speed
+speed_multiplier = 1 # used for slow motion powerup (1 = constant speed at 3)
+player_score = 0 #initial player score
+game_over = False #initial game over state
+obstacle_timer = 0 #timer for obstacle spawn
 
 # Initial cooldown is set high, but will be dynamically calculated in the loop
-powerup_timer = 0
+powerup_timer = 0 #timer for powerup spawn
 
 # Powerup states
-shield_active = False
-shield_end_time = 0
+shield_active = False 
+shield_end_time = 0 #initial shield end time
 
 jump_boost_active = False
 jump_boost_end_time = 0
@@ -211,35 +211,35 @@ double_points_active = False
 double_points_end_time = 0
 
 # Surfaces
-ground = pygame.image.load("Assets/Other/Track.png")
-ground = pygame.transform.scale(ground, (1280, 20))
-ground_x = 0
+ground = pygame.image.load("Assets/Other/Track.png") #load ground image
+ground = pygame.transform.scale(ground, (1280, 20)) #scale ground image
+ground_x = 0 #initial ground x position at left
 
 cloud_img = pygame.image.load("Assets/Other/Cloud.png")
 cloud_img = pygame.transform.scale(cloud_img, (200, 80))
 background_img = pygame.image.load("Assets/Other/christmas_bg.png").convert()
 background_img = pygame.transform.scale(background_img, (1280, 720))
 
-# Groups
-cloud_group = pygame.sprite.Group()
+# Groups (bundle draw, update, and collision for multiple sprites)
+cloud_group = pygame.sprite.Group() 
 obstacle_group = pygame.sprite.Group()
 dino_group = pygame.sprite.GroupSingle()
 ptero_group = pygame.sprite.Group()
 powerup_group = pygame.sprite.Group()
 
 # Objects
-dinosaur = Dino(50, 360)
-dino_group.add(dinosaur)
+dinosaur = Dino(50, 360) #create dinosaur object at position (50, 360)
+dino_group.add(dinosaur) #add dinosaur to dino group
 
 # Sounds
-death_sfx = pygame.mixer.Sound("sfx/lose.mp3")
-points_sfx = pygame.mixer.Sound("sfx/100points.mp3")
-jump_sfx = pygame.mixer.Sound("sfx/jump.mp3")
+death_sfx = pygame.mixer.Sound("sfx/lose.mp3") #death sound effect
+points_sfx = pygame.mixer.Sound("sfx/100points.mp3") #points sound effect
+jump_sfx = pygame.mixer.Sound("sfx/jump.mp3") #jump sound effect
 pickup_sfx = None
-try:
+try: #try load pickup sound effect
     pickup_sfx = pygame.mixer.Sound("sfx/pickup.mp3")
 except Exception:
-    # if no sound, ignore and no outputing error
+    # if no sound, ignore and no resulting error
     pickup_sfx = None
 
 all_sfx = pygame.mixer.Sound("sfx/AllSound.mp3")
