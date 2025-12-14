@@ -3,7 +3,7 @@ import pygame
 import os
 import random
 import sys
-pygame.init()
+pygame.init() #mandatory init pygame for activate all pygame modules
 
 game_state = "menu" #determine game state in menu
 high_score = 0 #set initial high score to 0
@@ -14,34 +14,34 @@ if os.path.exists("highscore.txt"):
         try:
             high_score = int(f.read()) #read file and change into integer
         except:
-            high_score = 0
+            high_score = 0 #if invalid content high score is 0
 
 #Screen
-screen = pygame.display.set_mode((1280, 720))
+screen = pygame.display.set_mode((1280, 720)) #window size 1280x720
 clock = pygame.time.Clock() #FPS control
-pygame.display.set_caption("Dino LevelUp - Powerups")
+pygame.display.set_caption("Dino LevelUp - Powerups") #window title
 
 #Font
-game_font = pygame.font.Font("Assets/Other/PressStart2P-Regular.ttf", 24)
+game_font = pygame.font.Font("Assets/Other/PressStart2P-Regular.ttf", 24) #game font
 
 #Classes
-class Cloud(pygame.sprite.Sprite):
-    def __init__(self, image, x_pos, y_pos):
-        super().__init__()
-        self.image = image
-        self.rect = self.image.get_rect(center=(x_pos, y_pos))
+class Cloud(pygame.sprite.Sprite): #cloud class, cloud is sprite that move left
+    def __init__(self, image, x_pos, y_pos): 
+        super().__init__() #inherit  from pygame sprite
+        self.image = image #cloud image
+        self.rect = self.image.get_rect(center=(x_pos, y_pos)) #cloud position centered at x_pos and y_pos, rect is rectangle around the image or collision box
 
     def update(self):
-        self.rect.x -= 1
+        self.rect.x -= 1 #cloud move left at speed 1
 
 
-class Dino(pygame.sprite.Sprite):
-    def __init__(self, x_pos, y_pos):
-        super().__init__()
-        self.running_sprites = []
-        self.ducking_sprites = []
+class Dino(pygame.sprite.Sprite): #dinosaur class the main character
+    def __init__(self, x_pos, y_pos): 
+        super().__init__() #inherit from pygame sprite
+        self.running_sprites = [] #list contain running sprites
+        self.ducking_sprites = [] #list contain ducking sprites
 
-        self.running_sprites.append(pygame.transform.scale(
+        self.running_sprites.append(pygame.transform.scale( #load and scale running sprite 1
             pygame.image.load("Assets/Dino/DinoRun1revv.png"), (80, 100)))
         self.running_sprites.append(pygame.transform.scale(
             pygame.image.load("Assets/Dino/DinoRun2revv.png"), (80, 100)))
@@ -51,13 +51,13 @@ class Dino(pygame.sprite.Sprite):
         self.ducking_sprites.append(pygame.transform.scale(
             pygame.image.load("Assets/Dino/DinoDuck2revv.png"), (110, 60)))
 
-        self.x_pos = x_pos
-        self.y_pos = y_pos
-        self.current_image = 0
+        self.x_pos = x_pos #dinosaur x position
+        self.y_pos = y_pos #dinosaur y position
+        self.current_image = 0 #current image index is 0 (start) for animation
         self.image = self.running_sprites[self.current_image]
         self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
-        self.velocity = 0
-        self.ducking = False
+        self.velocity = 0 #initial vertical velocity 
+        self.ducking = False #initial ducking state is false
 
     def jump(self):
         # Jump allowed only if on ground
@@ -124,7 +124,7 @@ class Ptero(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.x_pos = random.choice([1300, 1000, 1500])
-        self.y_pos = random.choice([280, 290, 295])
+        self.y_pos = random.choice([200, 250, 150])
         self.sprites = []
         self.sprites.append(
             pygame.transform.scale(
@@ -456,7 +456,7 @@ while True:
                     # spawn a powerup instead
                     kind = random.choice(["shield", "jump", "double"])
                     # random y coordinate for powerup spawn
-                    y_pos = random.choice([230, 250, 200])
+                    y_pos = random.choice([200, 250, 150])
                     new_powerup = Powerup(kind, x_pos=1280, y_pos=y_pos)
                     powerup_group.add(new_powerup)
                     obstacle_timer = pygame.time.get_ticks()
