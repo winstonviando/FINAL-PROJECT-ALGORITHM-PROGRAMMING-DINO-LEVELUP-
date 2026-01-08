@@ -41,8 +41,8 @@ class Dino(pygame.sprite.Sprite): #dinosaur class the main character
         self.running_sprites = [] #list contain running sprites
         self.ducking_sprites = [] #list contain ducking sprites
 
-        self.running_sprites.append(pygame.transform.scale( #load and scale running sprite 1
-            pygame.image.load("Assets/Dino/DinoRun1revv.png"), (80, 100)))
+        self.running_sprites.append(pygame.transform.scale(
+            pygame.image.load("Assets/Dino/DinoRun1revv.png"), (80, 100))) #load and scale running sprite 1
         self.running_sprites.append(pygame.transform.scale(
             pygame.image.load("Assets/Dino/DinoRun2revv.png"), (80, 100)))
 
@@ -150,11 +150,12 @@ class Ptero(pygame.sprite.Sprite): #pterodactyl obstacle class
         self.image = self.sprites[int(self.current_image)]
 
 class Powerup(pygame.sprite.Sprite):
-    """Power-up that moves left like obstacles. {'shield','jump','double'}"""
+    #Power-up that moves left like obstacles. {'shield','jump','double'}
     def __init__(self, kind, x_pos= random.choice([1280, 1300, 1500]), y_pos= random.choice([230, 250, 200])):
         super().__init__()
         self.kind = kind #powerup identity
         # try load images; fallback to a simple colored surface if missing
+        
         self.x_pos = x_pos #powerup x position
         self.y_pos = y_pos #powerup y position
         try: #load images based on kind of powerupS
@@ -320,6 +321,7 @@ while True:
 # function: chef cooks, event: order from customer, timer: kitchen timer
 # function: what to do, event: sign of what happens, timer: when it can happens
 #timer > event > handling in loop > function
+
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN and game_state == "menu": #mouse click event in menu state
             if start_btn_rect.collidepoint(event.pos): #if click is within start button rect
@@ -375,7 +377,7 @@ while True:
                     game_over = True #set game over state to true
                     death_sfx.play() #play death sound effect
                     all_sfx.stop() #stop background music
-                # --- HIGH SCORE UPDATE ---
+                # HIGH SCORE UPDATE
                     if player_score > high_score: #if current score is greater than high score
                         high_score = int(player_score) #convert current player score to int and set as new high score
                     with open("highscore.txt", "w") as f: #open high score file in write mode
@@ -383,6 +385,7 @@ while True:
 
         # Collision with other powerups except shield
         collected = pygame.sprite.spritecollide(dino_group.sprite, powerup_group, True) #check collision between dino and powerups, remove powerup on collection
+
         for pu in collected: # for each unknwon collected powerup
             # activate powerup
             now = pygame.time.get_ticks() #current time in milliseconds
