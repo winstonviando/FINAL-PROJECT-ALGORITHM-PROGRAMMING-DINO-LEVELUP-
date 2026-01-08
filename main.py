@@ -4,19 +4,19 @@ import random
 import config
 from sprites import Cloud, Dino, Cactus, Ptero, Powerup
 
-# Groups (bundle draw, update, and collision for multiple sprites)
+# groups (bundle draw, update, and collision for multiple sprites)
 cloud_group = pygame.sprite.Group() 
 obstacle_group = pygame.sprite.Group()
 dino_group = pygame.sprite.GroupSingle()
 powerup_group = pygame.sprite.Group()
 
-# Objects
+# objects
 dinosaur = Dino(50, 360) #create dinosaur object at position (50, 360)
 dino_group.add(dinosaur) #add dinosaur to dino group
 
 config.all_sfx.play(loops=-1) #play background music in loop
 
-# Functions
+# functions
 def end_game():
     game_over_text = config.game_font.render("Game Over!", True, "black") #render game over text
     game_over_rect = game_over_text.get_rect(center=(640, 300)) #center rect for game over text
@@ -37,15 +37,15 @@ def reset_powerups():
     config.double_points_active = False
     config.double_points_end_time = 0
     
-def draw_menu():
-    config.screen.blit(config.background_img, (0, 0))
+def draw_menu(): 
+    config.screen.blit(config.background_img, (0, 0)) #draw background image
 
-    # Title
-    title_surf = config.title_font.render("DINO LEVEL UP", True, (255, 255, 255))
+    # title
+    title_surf = config.title_font.render("DINO LEVEL UP", True, (255, 255, 255)) #render title text
     title_rect = title_surf.get_rect(center=(640, 250))
     config.screen.blit(title_surf, title_rect)
 
-    # Start button
+    # start button
     pygame.draw.rect(config.screen, (200, 0, 0), config.start_btn_rect, border_radius=10)
     start_text = config.start_font.render("START", True, (255, 255, 255))
     start_rect = start_text.get_rect(center=config.start_btn_rect.center)
@@ -53,13 +53,13 @@ def draw_menu():
 
 
 def draw_shield_aura(sprite):
-    # draw semi-transparent circle around the dino to show shield
+    # draw semi transparent circle around the dino to show shield exist
     aura_surf = pygame.Surface((sprite.rect.width*2, sprite.rect.height*2), pygame.SRCALPHA) #create transparent surface
     pygame.draw.circle(aura_surf, (0, 160, 255, 100), (aura_surf.get_width()//2, aura_surf.get_height()//2), max(sprite.rect.width, sprite.rect.height)) #draw semi-transparent blue circle
     config.screen.blit(aura_surf, (sprite.rect.centerx - aura_surf.get_width()//2, sprite.rect.centery - aura_surf.get_height()//2)) #blit aura centered on sprite blit is like overlay
 
 
-# Main Loop
+# main Loop
 while True:
     keys = pygame.key.get_pressed() #get current all key presses
     if keys[pygame.K_DOWN]: #if down key pressed
@@ -110,7 +110,7 @@ while True:
     elif config.game_state == "playing": #in playing state
         config.screen.blit(config.background_img, (0, 0)) #draw background image
 
-        # Collision with obstacles (consider shield)
+        # collision with obstacles (consider shield)
         hit = pygame.sprite.spritecollide(dino_group.sprite, obstacle_group, False) #check collision between dino and obstacles (cactus/ptero) and obstacles not removed on hit
         if hit: #check if there was a collision
             if not config.game_over: #only process if it is not in game over state
@@ -128,14 +128,14 @@ while True:
                         with open("highscore.txt", "w") as f: #open high score file in write mode
                             f.write(str(config.high_score)) #write new high score to file as string
 
-        # Collision with other powerups except shield
+        # collision with other powerups except shield
         collected = pygame.sprite.spritecollide(dino_group.sprite, powerup_group, True) #check collision between dino and powerups, remove powerup on collection
 
         for pu in collected: # for each unknwon collected powerup
             # activate powerup
             now = pygame.time.get_ticks() #current time in milliseconds
             
-            # All powerups last for 3 seconds (3000ms)
+            # all powerups last for 3 seconds (3000ms)
             POWERUP_DURATION = 3000
             if pu.kind == "shield":
                 config.shield_active = True
@@ -149,7 +149,7 @@ while True:
             if config.pickup_sfx:
                 config.pickup_sfx.play() #play pickup sound effect if loaded
 
-        # Update powerup timers
+        # update powerup timers
         t = pygame.time.get_ticks() #current time in milliseconds
         if config.shield_active and t >= config.shield_end_time: #if shield active and current time exceeds end time
             config.shield_active = False #deactivate shield
@@ -158,7 +158,7 @@ while True:
         if config.double_points_active and t >= config.double_points_end_time:
             config.double_points_active = False
 
-        # Game over display
+        # game over screen
         if config.game_over:
             end_game() #call end game function
         else:
@@ -216,14 +216,14 @@ while True:
             dino_group.update() 
             dino_group.draw(config.screen) 
 
-            # Draw shield aura if active
+            # draw shield aura if active
             if config.shield_active:
                 draw_shield_aura(dino_group.sprite)
             
             powerup_group.update() 
             powerup_group.draw(config.screen) 
 
-            # Ground scroll
+            # ground scroll
             config.ground_x -= config.game_speed 
             config.screen.blit(config.ground, (config.ground_x, 360)) 
             config.screen.blit(config.ground, (config.ground_x + 1280, 360)) 

@@ -37,7 +37,7 @@ class Dino(pygame.sprite.Sprite): #dinosaur class the main character
         self.ducking = False #initial ducking state is false
 
     def jump(self):
-        # Jump allowed only if on ground (prevent double jump click)
+        # jump allowed only if on ground (prevent double jump click)
         if self.rect.centery >= 360:
             config.jump_sfx.play() #play jump sound effect
             # Jump height depends on jump boost
