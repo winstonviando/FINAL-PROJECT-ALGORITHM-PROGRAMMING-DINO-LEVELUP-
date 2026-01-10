@@ -66,7 +66,7 @@ except Exception:
 
 all_sfx = pygame.mixer.Sound("sfx/AllSound.mp3") #background jinggle bell music
 all_sfx.set_volume(0.2) #set volume lower for background music
-# all_sfx.play(loops=-1) # This will be called in main.py
+# all_sfx.play(loops=-1) #this will be called in main.py
 
 # UI Rects
 start_btn_rect = pygame.Rect(0, 0, 300, 80) #width 300 height 80 for start button

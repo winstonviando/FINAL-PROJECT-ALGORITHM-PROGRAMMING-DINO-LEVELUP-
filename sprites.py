@@ -11,7 +11,6 @@ class Cloud(pygame.sprite.Sprite): #cloud class, cloud is sprite that move left
     def update(self):
         self.rect.x -= 1 #cloud move left at speed 1
 
-
 class Dino(pygame.sprite.Sprite): #dinosaur class the main character
     def __init__(self, x_pos, y_pos): 
         super().__init__() #inherit from pygame sprite

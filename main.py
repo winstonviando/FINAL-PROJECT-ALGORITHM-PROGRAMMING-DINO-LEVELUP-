@@ -41,7 +41,7 @@ def draw_menu():
     config.screen.blit(config.background_img, (0, 0)) #draw background image
 
     # title
-    title_surf = config.title_font.render("DINO LEVEL UP", True, (255, 255, 255)) #render title text
+    title_surf = config.title_font.render("DINO LEVEL-UP", True, (255, 255, 255)) #render title text
     title_rect = title_surf.get_rect(center=(640, 250))
     config.screen.blit(title_surf, title_rect)
 
@@ -131,10 +131,9 @@ while True:
         # collision with other powerups except shield
         collected = pygame.sprite.spritecollide(dino_group.sprite, powerup_group, True) #check collision between dino and powerups, remove powerup on collection
 
-        for pu in collected: # for each unknwon collected powerup
+        for pu in collected: # for each unknown collected powerup
             # activate powerup
             now = pygame.time.get_ticks() #current time in milliseconds
-            
             # all powerups last for 3 seconds (3000ms)
             POWERUP_DURATION = 3000
             if pu.kind == "shield":
