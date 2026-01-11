@@ -1,10 +1,10 @@
 # Dino LevelUp
-An endless runner game built with **Pygame** featuring a dinosaur navigating obstacles, collecting power-ups, and surviving as the game speed increases.
+An endless dino runner game built with **Pygame** featuring a dinosaur navigating obstacles, game powerups, and surviving as the game speed increases.
 ---
 ## Project Overview
 **Dino LevelUp** is a Christmas-themed take on the classic dinosaur runner and jump game. The player controls a dinosaur that must jump over cactus and duck under pterodactyls birds. To help the player achieve a high score, three unique power-ups can be collected:
 * **Shield**: Protects the dinosaur from one collision with an obstacle.
-* **Jump Boost**: Increases the jump height significantly (Velocity changes from -12 to -15).
+* **Jump Boost**: Increases the jump height significantly.
 * **Double Points**: Increases the score gain from 0.1 to 0.2 per frame.
 The game features persistent high-score tracking via a `highscore.txt` file, dynamic obstacle spawning that scales with game speed, and an immersive holiday-themed background with sound effects.
 ---
