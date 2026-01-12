@@ -38,3 +38,4 @@ This project relies on the **Pygame** library for rendering and game logic.
 * **ESC**: Quit the game.
 * **Mouse Click**: Interact with the "START" button on the menu.
 ### Dino Level-Up Final Project Report PDF File Link: https://drive.google.com/file/d/1P23R7h-zvrJZjDYzmupkAma7dQCDhaUZ/view?usp=sharing
+### Dino Level-Up A3 Poster Link: https://drive.google.com/file/d/1jVnL-3AIHttA10eHM7zkKVc1J33dm3u1/view?usp=sharing
