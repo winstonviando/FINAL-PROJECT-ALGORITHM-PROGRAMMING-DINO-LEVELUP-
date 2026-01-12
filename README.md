@@ -37,4 +37,4 @@ This project relies on the **Pygame** library for rendering and game logic.
 * **DOWN Arrow**: Duck (changes Dino hitbox and sprite).
 * **ESC**: Quit the game.
 * **Mouse Click**: Interact with the "START" button on the menu.
-* ### Dino Level-Up Final Project Report PDF File Link: https://drive.google.com/file/d/1P23R7h-zvrJZjDYzmupkAma7dQCDhaUZ/view?usp=sharing
+### Dino Level-Up Final Project Report PDF File Link: https://drive.google.com/file/d/1P23R7h-zvrJZjDYzmupkAma7dQCDhaUZ/view?usp=sharing
